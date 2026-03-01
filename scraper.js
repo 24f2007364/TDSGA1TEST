@@ -22,7 +22,7 @@ const seeds = [48,49,50,51,52,53,54,55,56,57];
   }
 
   console.log("=================================");
-  console.log("FINAL TOTAL:", grandTotal);
+  console.log(grandTotal);
   console.log("=================================");
 
   await browser.close();
