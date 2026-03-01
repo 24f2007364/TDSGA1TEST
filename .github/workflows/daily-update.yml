@@ -2,8 +2,11 @@ name: Daily Repository Update
 
 on:
   schedule:
-    - cron: '17 2 * * *'   # Runs daily at 02:17 UTC (specific time, no wildcards)
-  workflow_dispatch:        # Allows manual trigger for testing
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 🔥 This is the fix
 
 jobs:
   daily-commit:
@@ -12,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Git
         run: |
@@ -22,7 +27,7 @@ jobs:
         run: |
           echo "Last updated on $(date -u)" >> daily-log.txt
 
-      - name: Commit changes
+      - name: Commit and Push
         run: |
           git add daily-log.txt
           git commit -m "Automated daily update: $(date -u)" || echo "No changes to commit"
